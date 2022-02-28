@@ -41,9 +41,15 @@ const endTurn = function () {
   );
   activePlayer.turnScore = 0;
   player1.hasTurn = player1.hasTurn ? false : true;
+  dice.html.classList.add('hidden');
 };
 
 const rollDice = function () {
+  //if 'hidden' class in on dice, remove it.
+  if (dice.html.classList.contains('hidden'));
+  {
+    dice.html.classList.remove('hidden');
+  }
   const random = Math.trunc(Math.random() * 6);
   console.log(`${activePlayer.playerName} rolls: ${random + 1}`);
   dice.html.src = dice.img[random];
@@ -68,15 +74,13 @@ const holdScore = function () {
 //initital state
 const resetAll = function () {
   console.log('newGame');
+
   player1.turnScore = 0;
   player1.heldScore = 0;
   player1.hasTurn = true;
 
   player2.turnScore = 0;
   player2.heldScore = 0;
-
-  const random = Math.trunc(Math.random() * 6);
-  dice.html.src = dice.img[random];
 };
 
 const render = function () {
