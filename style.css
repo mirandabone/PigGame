@@ -103,6 +103,7 @@ main {
 
 .player--active {
   background-color: rgba(255, 255, 255, 0.4);
+  border: solid;
 }
 .player--active .name {
   font-weight: 700;
@@ -113,6 +114,7 @@ main {
 
 .player--active .current {
   opacity: 1;
+  border: solid black;
 }
 
 .current {
