@@ -36,13 +36,16 @@ const player2 = {
 let activePlayer;
 
 const endTurn = function () {
+  console.log(
+    `${activePlayer.playerName}'s turn has ended; ${activePlayer.turnScore} has been added to their score`
+  );
   activePlayer.turnScore = 0;
   player1.hasTurn = player1.hasTurn ? false : true;
 };
 
 const rollDice = function () {
   const random = Math.trunc(Math.random() * 6);
-  console.log(random);
+  console.log(`${activePlayer.playerName} rolls: ${random + 1}`);
   dice.html.src = dice.img[random];
   if (random === 0) {
     activePlayer.turnScore = 0;
@@ -60,7 +63,6 @@ const holdScore = function () {
   }
 
   endTurn();
-  console.log(activePlayer.playerName + activePlayer.heldScore);
 };
 
 //initital state
@@ -99,13 +101,11 @@ resetAll();
 render();
 
 roll.addEventListener('click', function () {
-  console.log('roll daa dice');
   rollDice();
   render();
 });
 
 hold.addEventListener('click', function () {
-  console.log(`hold'em`);
   holdScore();
   render();
 });
