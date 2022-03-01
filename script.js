@@ -20,17 +20,19 @@ const dice = {
 // Player objects
 const player1 = {
   playerName: 'Player 1',
-  playerBackground: 'player---active',
+  EL: document.querySelector('.player--0'),
   turnScore: 0,
   heldScore: 0,
   hasTurn: true,
+  hasWon: false,
 };
 
 const player2 = {
   playerName: 'Player 2',
-  playerBackground: '',
+  EL: document.querySelector('.player--1'),
   turnScore: 0,
   heldScore: 0,
+  hasWon: true,
 };
 
 let activePlayer;
@@ -65,10 +67,19 @@ const holdScore = function () {
   activePlayer.heldScore += activePlayer.turnScore;
 
   if (activePlayer.heldScore > 100) {
+    displayWinner(activePlayer);
     console.log(`${activePlayer.playerName} wins!! Well Done!`);
   }
 
   endTurn();
+};
+
+const displayWinner = function (winningPlayer) {
+  console.log(
+    winningPlayer.playerName + '  has won! displayWinner has been called'
+  );
+  winningPlayer.hasWon = true;
+  render();
 };
 
 //initital state
@@ -78,9 +89,17 @@ const resetAll = function () {
   player1.turnScore = 0;
   player1.heldScore = 0;
   player1.hasTurn = true;
+  player1.hasWon = false;
+  if (player1.EL.classList.contains('player--winner')) {
+    player1.EL.classList.remove('player--winner');
+  }
 
   player2.turnScore = 0;
   player2.heldScore = 0;
+  player2.hasWon = false;
+  if (player2.EL.classList.contains('player--winner')) {
+    player2.EL.classList.remove('player--winner');
+  }
 };
 
 const render = function () {
@@ -88,33 +107,48 @@ const render = function () {
   activePlayer = player1.hasTurn ? player1 : player2;
   //display active player by updating css classes
   if (player1.hasTurn) {
-    document.querySelector('.player--0').classList.add('player--active');
-    document.querySelector('.player--1').classList.remove('player--active');
+    player1.EL.classList.add('player--active');
+    player2.EL.classList.remove('player--active');
   } else {
-    document.querySelector('.player--0').classList.remove('player--active');
-    document.querySelector('.player--1').classList.add('player--active');
+    player1.EL.classList.remove('player--active');
+    player2.EL.classList.add('player--active');
   }
   //display scores, both turn and held, for both players
   document.getElementById('current--0').textContent = player1.turnScore;
   document.getElementById('current--1').textContent = player2.turnScore;
   document.getElementById('score--0').textContent = player1.heldScore;
   document.getElementById('score--1').textContent = player2.heldScore;
+
+  //display something to show who won
+  if (player1.hasWon === true) {
+    document.getElementById('score--0').textContent = 'Wins';
+    player1.EL.classList.add('player--winner');
+  }
+  if (player2.hasWon === true) {
+    document.getElementById('score--1').textContent = 'Wins';
+    player2.EL.classList.add('player--winner');
+  }
 };
 
 resetAll();
 render();
 
 roll.addEventListener('click', function () {
-  rollDice();
+  if (player1.hasWon === false && player2.hasWon === false) {
+    rollDice();
+  }
   render();
 });
 
 hold.addEventListener('click', function () {
-  holdScore();
+  if (player1.hasWon === false && player2.hasWon === false) {
+    holdScore();
+  }
   render();
 });
 
 newGame.addEventListener('click', function () {
   resetAll();
+  //   displayWinner(player1);
   render();
 });
