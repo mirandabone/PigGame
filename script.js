@@ -4,6 +4,7 @@
 const newGame = document.querySelector('.btn--new');
 const roll = document.querySelector('.btn--roll');
 const hold = document.querySelector('.btn--hold');
+const chooseNames = document.querySelector('.btn--custom');
 
 const dice = {
   html: document.querySelector('.dice'),
@@ -103,6 +104,10 @@ const resetAll = function () {
 };
 
 const render = function () {
+  // display player names
+  document.getElementById('name--0').textContent = player1.playerName;
+  document.getElementById('name--1').textContent = player2.playerName;
+
   //update active player
   activePlayer = player1.hasTurn ? player1 : player2;
   //display active player by updating css classes
@@ -150,5 +155,11 @@ hold.addEventListener('click', function () {
 newGame.addEventListener('click', function () {
   resetAll();
   //   displayWinner(player1);
+  render();
+});
+
+chooseNames.addEventListener('click', function () {
+  player1.playerName = prompt(`Enter a name for Player 1`, `Player 1`);
+  player2.playerName = prompt(`Enter a name for Player 2`, `Player 2`);
   render();
 });
